@@ -6,6 +6,7 @@ namespace ApartmentBuildingManagementSystem.Services
     {
         Task<IEnumerable<ConsumptionDetails>> GetItemsAsync(string query);
         Task<ConsumptionDetails> GetItemAsync(string id);
-        Task AddItemAsync(ConsumptionDetails item);
+        Task AddItemAsync(ConsumptionDetails consumptionDetail);
+        Task UpdateItemAsync(string id, ConsumptionDetails consumptionDetail);
     }
 }

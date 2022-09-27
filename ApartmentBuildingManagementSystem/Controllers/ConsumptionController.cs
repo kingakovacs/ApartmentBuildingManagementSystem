@@ -27,13 +27,45 @@ namespace ApartmentBuildingManagementSystem.Controllers
         [HttpPost]
         [ActionName("UploadConsumption")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind("Id,Name,Price,Consumption")] ConsumptionDetails item)
+        public async Task<ActionResult> CreateAsync([Bind("Id,DateCreated,ConsumptionType,Consumption,Price")] ConsumptionDetails cd)
         {
             if (ModelState.IsValid)
             {
-                item.Id = Guid.NewGuid();
-                await _cosmosDbService.AddItemAsync(item);
+                cd.Id = Guid.NewGuid();
+                cd.DateCreated = DateTime.UtcNow;
+                await _cosmosDbService.AddItemAsync(cd);
                 return RedirectToAction("OverviewOfConsumptions");
+            }
+
+            return View(cd);
+        }
+
+        [HttpPost]
+        [ActionName("EditConsumption")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditAsync([Bind("Id,DateCreated,ConsumptionType,Consumption,Price")] ConsumptionDetails cd)
+        {
+            if (ModelState.IsValid)
+            {
+                await _cosmosDbService.UpdateItemAsync(cd.Id.ToString(), cd);
+                return RedirectToAction("OverviewOfConsumptions");
+            }
+
+            return View(cd);
+        }
+
+        [ActionName("EditConsumption")]
+        public async Task<ActionResult> EditAsync(string id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            ConsumptionDetails item = await _cosmosDbService.GetItemAsync(id);
+            if (item == null)
+            {
+                return NotFound();
             }
 
             return View(item);

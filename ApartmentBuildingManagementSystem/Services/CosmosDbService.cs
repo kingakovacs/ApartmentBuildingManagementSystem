@@ -15,9 +15,9 @@ namespace ApartmentBuildingManagementSystem.Services
             this._container = dbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddItemAsync(ConsumptionDetails item)
+        public async Task AddItemAsync(ConsumptionDetails consumptionDetail)
         {
-            await this._container.CreateItemAsync<ConsumptionDetails>(item, new PartitionKey(item.Id.ToString()));
+            await this._container.CreateItemAsync<ConsumptionDetails>(consumptionDetail, new PartitionKey(consumptionDetail.Id.ToString()));
         }
 
         public async Task<ConsumptionDetails> GetItemAsync(string id)
@@ -46,6 +46,11 @@ namespace ApartmentBuildingManagementSystem.Services
             }
 
             return results;
+        }
+
+        public async Task UpdateItemAsync(string id, ConsumptionDetails consumptionDetail)
+        {
+            await this._container.UpsertItemAsync<ConsumptionDetails>(consumptionDetail, new PartitionKey(id));
         }
     }
 }

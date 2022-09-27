@@ -2,6 +2,13 @@
 
 namespace ApartmentBuildingManagementSystem.Models
 {
+    public enum ConsumptionType {
+        HotWater,
+        ColdWater,
+        Electricity,
+        Gas
+    };
+
     /// <summary>
     /// Class for the details of any kind of consumption (electricity, gas, water)
     /// </summary>
@@ -10,13 +17,12 @@ namespace ApartmentBuildingManagementSystem.Models
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public DateTime DateCreated { get; set; }
 
-        [JsonProperty(PropertyName = "consumption")]
+        public ConsumptionType ConsumptionType { get; set; }
+
         public double Consumption { get; set; }
 
-        [JsonProperty(PropertyName = "price")]
         public double Price { get; set; }
     }
 }
